@@ -1,5 +1,7 @@
 package com.iclean.icleanapi.controller;
 
+import com.iclean.icleanapi.dao.UserMapper;
+import com.iclean.icleanapi.domain.User;
 import com.iclean.icleanapi.dto.ResponseObject;
 import com.iclean.icleanapi.service.interf.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     @Autowired
     private final ProductService productService;
+    private final UserMapper userMapper;
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseObject> getProductById(@PathVariable int id) {
-        return productService.getProductByID(id);
+    public User getProductById(@PathVariable int id) {
+        return userMapper.findUserByUserName("user_123");
     }
 }
