@@ -1,6 +1,6 @@
 package com.iclean.icleanapi.config;
 
-import com.iclean.icleanapi.dao.UserMapper;
+import com.iclean.icleanapi.repository.UserMapper;
 import com.iclean.icleanapi.domain.User;
 import com.iclean.icleanapi.dto.UserPrinciple;
 import org.springframework.beans.factory.annotation.Autowired;
