@@ -21,4 +21,5 @@ public class User {
     private String bio;
     private String profilePicture;
     private String roleName;
+    private int role_id;
 }
