@@ -21,9 +21,13 @@
         ORDER BY feedback_time desc
     </select>
 
-    <select id="getOrderById" resultType="com.iclean.icleanapi.dto.FeedbackForm">
+    <select id="getOrderById" resultType="com.iclean.icleanapi.domain.Order">
         SELECT
             order_id,
+            work_date,
+            work_time,
+            work_start,
+            work_end,
             rate,
             feedback,
             feedback_time,
@@ -40,11 +44,13 @@
         ORDER BY feedback_time desc
     </select>
 
-    <update id="changeStatusOrder" parameterType = "int">
+    <update id="changeStatusOrder" parameterType="com.iclean.icleanapi.domain.Order">
         UPDATE orders
         SET
-            status_id = #{statusId}
+            status_id = #{statusId},
+            work_start = #{order.workStart},
+            work_end = #{order.workEnd}
         WHERE
-            order_id = #{orderId}
+            order_id = #{order.orderId}
     </update>
 </mapper>

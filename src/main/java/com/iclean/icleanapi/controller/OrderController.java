@@ -1,13 +1,11 @@
 package com.iclean.icleanapi.controller;
 
+import com.iclean.icleanapi.dto.ChangeStatusOrderForm;
 import com.iclean.icleanapi.dto.ResponseObject;
 import com.iclean.icleanapi.service.interf.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3030", "https://clatt-api.monoinfinity.net",
@@ -20,5 +18,10 @@ public class OrderController {
     @GetMapping("/feedback")
     public ResponseEntity<ResponseObject> getFeedback() {
         return orderService.getFeedback();
+    }
+
+    @PutMapping("/status")
+    public ResponseEntity<ResponseObject> changeStatus(@RequestBody ChangeStatusOrderForm orderForm) {
+        return orderService.changeStatusOrder(orderForm.getOrder_id(), orderForm.getStatus_id());
     }
 }

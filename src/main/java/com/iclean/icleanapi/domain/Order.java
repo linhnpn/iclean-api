@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -18,19 +18,21 @@ public class Order {
 
     private Double latitude;
 
-    private Date workDate;
+    private LocalDateTime workDate;
 
-    private Date workStart;
+    private Integer workTime;
 
-    private Date workEnd;
+    private LocalDateTime workStart;
 
-    private Date orderDate;
+    private LocalDateTime workEnd;
+
+    private LocalDateTime orderDate;
 
     private Double rate;
 
     private String feedback;
 
-    private Date feedbackTime;
+    private LocalDateTime feedbackTime;
 
     private String orderscol;
 

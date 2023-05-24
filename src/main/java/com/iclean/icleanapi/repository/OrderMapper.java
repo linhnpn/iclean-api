@@ -12,5 +12,5 @@ public interface OrderMapper {
 
     Order getOrderById(int orderId);
 
-    boolean changeStatusOrder(int statusId, int orderId);
+    boolean changeStatusOrder(int statusId, Order order);
 }
