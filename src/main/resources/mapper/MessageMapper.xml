@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iclean.icleanapi.repository.MessageMapper">
+
+    <resultMap id="MessageMap" type="com.iclean.icleanapi.dto.Inbox">
+        <result column="from_id" property="fromId"/>
+        <result column="to_id" property="toId"/>
+        <result column="fullname" property="name"/>
+        <result column="profile_picture" property="image"/>
+        <result column="content" property="newestMessage"/>
+        <result column="sent_datetime" property="timestamp"/>
+        <result column="status" property="isRead"/>
+        <result column="unreadMess" property="unreadMess"/>
+    </resultMap>
+
+    <select id="getAllInbox" parameterType="com.iclean.icleanapi.dto.MessageDto" resultMap="MessageMap">
+
+    </select>
+
+    <select id="getInbox" parameterType="com.iclean.icleanapi.dto.DetailInbox" resultMap="com.iclean.icleanapi.domain.Message">
+        select
+        message_id,
+        sent_datetime,
+        content,
+        file_link,
+        from_id,
+        to_id,
+        status
+        from message m
+        where (m.from_id = #{userId} or m.to_id = #{userId})
+        and
+        (m.from_id = #{employeeId} or m.to_id = #{employeeId})
+        order by
+        m.sent_datetime
+    </select>
+
+    <insert id="sendMessage" parameterType="com.iclean.icleanapi.dto.MessageDto">
+        INSERT INTO message (sent_datetime, content, file_link, from_id, to_id, status)
+        VALUES (#{sentDatetime}, #{content}, #{fileLink}, #{fromId}, #{to_id}, #{status});
+    </insert>
+
+    <update id="isRead" parameterType="com.iclean.icleanapi.dto.MessageDto">
+        update user
+        set
+        status = #{status}
+        where message_id = #{messageId}
+    </update>
+
+</mapper>
