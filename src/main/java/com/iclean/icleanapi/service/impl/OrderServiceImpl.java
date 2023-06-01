@@ -1,8 +1,12 @@
 package com.iclean.icleanapi.service.impl;
 
 import com.iclean.icleanapi.constant.StatusOrder;
+import com.iclean.icleanapi.domain.Address;
 import com.iclean.icleanapi.domain.Order;
+import com.iclean.icleanapi.dto.FeedbackForm;
+import com.iclean.icleanapi.dto.NewOrderForm;
 import com.iclean.icleanapi.dto.ResponseObject;
+import com.iclean.icleanapi.repository.AddressMapper;
 import com.iclean.icleanapi.repository.OrderMapper;
 import com.iclean.icleanapi.service.interf.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private AddressMapper addressMapper;
 
     @Override
     public ResponseEntity<ResponseObject> getFeedback() {
@@ -72,6 +78,41 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), exception.getMessage(), null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<ResponseObject> createOrder(NewOrderForm form) {
+        try {
+            Address address = addressMapper.getAddressDefaultByUserId(form.getRenterId());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            String formatDateTime = now.format(formatter);
+            form.setOrderDate(LocalDateTime.parse(formatDateTime, formatter));
+            Order order = new Order();
+
+            order.setLocation(address.getDescription());
+            order.setLongitude(address.getLongitude());
+            order.setLatitude(address.getLatitude());
+            order.setWorkDate(form.getWorkDate());
+            order.setWorkTime(form.getWorkTime());
+            order.setOrderDate(LocalDateTime.parse(formatDateTime, formatter));
+            order.setRenterId(form.getRenterId());
+            order.setEmployeeId(form.getEmployeeId());
+            order.setJobId(form.getJobId());
+            order.setStatusId(StatusOrder.UNDONE.getValue());
+            order.setVoucherCode(form.getVoucherCode());
+
+            boolean check = orderMapper.createOrder(order);
+            if (check) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ResponseObject(HttpStatus.OK.toString(), "Create Order success!", null));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Create Order Failed!", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), e.getMessage(), null));
         }
     }
 

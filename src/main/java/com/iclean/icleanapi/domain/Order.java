@@ -46,4 +46,6 @@ public class Order {
 
     private Integer paymentId;
 
+    private String voucherCode;
+
 }

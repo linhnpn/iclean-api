@@ -21,6 +21,39 @@
             user_id = #{userId}
     </select>
 
+    <select id="getAddressById"
+            resultType="com.iclean.icleanapi.domain.Address"
+    >
+        SELECT
+        address_id,
+        longitude,
+        latitude,
+        description,
+        timestamp,
+        is_default,
+        user_id
+        FROM addresses
+        WHERE
+        address_id = #{address_id}
+    </select>
+
+    <select id="getAddressDefaultByUserId"
+            resultType="com.iclean.icleanapi.domain.Address"
+    >
+        SELECT
+        address_id,
+        longitude,
+        latitude,
+        description,
+        timestamp,
+        is_default,
+        user_id
+        FROM addresses
+        WHERE
+        user_id = #{userId}
+        AND is_default = 1
+    </select>
+
     <insert id="insertUserAddress" parameterType="com.iclean.icleanapi.domain.Address">
         INSERT INTO addresses
         (

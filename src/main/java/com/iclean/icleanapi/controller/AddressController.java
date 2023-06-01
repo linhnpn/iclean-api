@@ -8,15 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3030", "https://clatt-api.monoinfinity.net",
-        "https://cleaning-house-service.vercel.app", "http://localhost:8080"}, allowCredentials = "true")
 @RequestMapping("/api/v1/address")
 public class AddressController {
 
     @Autowired
     private AddressService addressService;
 
-    @PostMapping("/insert")
+    @PostMapping("")
     public ResponseEntity<ResponseObject> insertUserAddress(@RequestBody Address address) {
         return addressService.insertUserAddress(address);
     }
@@ -26,8 +24,13 @@ public class AddressController {
         return addressService.deleteUserAddress(userId);
     }
 
-    @PutMapping("/update")
+    @PutMapping("")
     public ResponseEntity<ResponseObject> updateUserAddress(@RequestBody Address address) {
         return addressService.updateUserAddress(address);
+    }
+
+    @PutMapping("/default-address")
+    public ResponseEntity<ResponseObject> updateDefaultUserAddress(@RequestParam int userId, @RequestParam int addressId) {
+        return addressService.setDefault(userId, addressId);
     }
 }

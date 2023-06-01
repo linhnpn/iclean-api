@@ -21,6 +21,11 @@
         ORDER BY feedback_time desc
     </select>
 
+    <insert id="createOrder" parameterType="com.iclean.icleanapi.domain.Order">
+        INSERT INTO orders (location, longitude, latitude, work_date, work_time, order_date, renter_id, employee_id, job_id, status_id, voucher_code)
+        VALUES (#{location}, #{longitude}, #{latitude}, #{workDate}, #{workTime}, #{orderDate}, #{renterId}, #{employeeId}, #{jobId}, #{statusId}, #{voucherCode});
+    </insert>
+
     <select id="getOrderById" resultType="com.iclean.icleanapi.domain.Order">
         SELECT
             order_id,

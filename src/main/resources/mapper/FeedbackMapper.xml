@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iclean.icleanapi.repository.FeedbackMapper">
+
+    <resultMap id="FeedbackMap" type="com.iclean.icleanapi.dto.Feedback">
+        <result column="order_id" property="orderId"/>
+        <result column="rate" property="rate"/>
+        <result column="fullname" property="renterName"/>
+        <result column="profile_picture" property="renterImage"/>
+        <result column="feedback" property="feedback"/>
+        <result column="feedback_time" property="feedbackTime"/>
+    </resultMap>
+
+    <select id="getFeedback" resultMap="FeedbackMap">
+        SELECT
+        o.order_id,
+        o.rate,
+        o.feedback,
+        o.feedback_time,
+        u.fullname,
+        u.profile_picture
+        FROM orders o
+        LEFT JOIN user u ON o.renter_id = u.user_id
+        WHERE o.job_id = #{jobId}
+        AND o.employee_id = #{employeeId}
+        AND o.feedback IS NOT NULL
+        ORDER BY feedback_time desc
+    </select>
+
+    <update id="createFeedback" parameterType="com.iclean.icleanapi.dto.FeedbackRequest">
+        UPDATE orders
+        SET
+        rate = #{rate},
+        feedback = #{feedback},
+        feedback_time = #{feedbackTime}
+        WHERE
+        order_id = #{orderId}
+    </update>
+</mapper>

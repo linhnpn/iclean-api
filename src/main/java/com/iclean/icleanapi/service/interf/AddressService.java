@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 public interface AddressService {
     ResponseEntity<ResponseObject> insertUserAddress(Address address);
 
+    ResponseEntity<ResponseObject> setDefault(int userId, int addressId);
+
     ResponseEntity<ResponseObject> deleteUserAddress(int userId);
 
     ResponseEntity<ResponseObject> updateUserAddress(Address address);

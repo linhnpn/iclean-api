@@ -7,4 +7,6 @@ import org.springframework.http.ResponseEntity;
 public interface JobEmployeeService {
 
     ResponseEntity<ResponseObject> getEmployeeByJobId(int jobId);
+
+    ResponseEntity<ResponseObject> getJobByEmployee(int employeeId);
 }

@@ -1,6 +1,7 @@
 package com.iclean.icleanapi.repository;
 
 import com.iclean.icleanapi.domain.Order;
+import com.iclean.icleanapi.dto.NewOrderForm;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface OrderMapper {
     Order getOrderById(int orderId);
 
     boolean changeStatusOrder(int statusId, Order order);
+
+    boolean createOrder(Order order);
 }
