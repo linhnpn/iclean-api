@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iclean.icleanapi.repository.OrderMapper">
+
+    <select id="getFeedback" resultType="com.iclean.icleanapi.dto.FeedbackForm">
+        SELECT
+            order_id,
+            rate,
+            feedback,
+            feedback_time,
+            orderscol,
+            renter_id,
+            employee_id,
+            job_id,
+            status_id,
+            payment_id
+        FROM orders
+        ORDER BY feedback_time desc
+    </select>
+
+    <select id="getOrderById" resultType="com.iclean.icleanapi.domain.Order">
+        SELECT
+            order_id,
+            work_date,
+            work_time,
+            work_start,
+            work_end,
+            rate,
+            feedback,
+            feedback_time,
+            orderscol,
+            renter_id,
+            employee_id,
+            job_id,
+            status_id,
+            payment_id
+        FROM
+            orders
+        WHERE
+            order_id = #{orderId}
+        ORDER BY feedback_time desc
+    </select>
+
+    <update id="changeStatusOrder" parameterType="com.iclean.icleanapi.domain.Order">
+        UPDATE orders
+        SET
+            status_id = #{statusId},
+            work_start = #{order.workStart},
+            work_end = #{order.workEnd}
+        WHERE
+            order_id = #{order.orderId}
+    </update>
+</mapper>

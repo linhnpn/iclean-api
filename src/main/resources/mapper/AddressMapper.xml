@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iclean.icleanapi.repository.AddressMapper">
+
+    <select id="getAddressByUserId"
+            resultType="com.iclean.icleanapi.domain.Address"
+    >
+        SELECT
+            address_id,
+            longitude,
+            latitude,
+            description,
+            timestamp,
+            is_default,
+            user_id
+        FROM addresses
+        WHERE
+            user_id = #{userId}
+    </select>
+
+    <insert id="insertUserAddress" parameterType="com.iclean.icleanapi.domain.Address">
+        INSERT INTO addresses
+        (
+            longitude,
+            latitude,
+            description,
+            timestamp,
+            is_default,
+            user_id
+        )
+        VALUES
+        (
+            #{longitude},
+            #{latitude},
+            #{description},
+            #{timestamp},
+            #{isDefault},
+            #{userId}
+        )
+    </insert>
+
+    <delete id="deleteUserAddress" parameterType="Integer">
+        DELETE
+        FROM
+            addresses
+        WHERE
+            user_id = #{userId}
+    </delete>
+
+    <update id="updateUserAddress" parameterType="com.iclean.icleanapi.domain.Address">
+        UPDATE addresses
+        SET
+            longitude   = #{longitude},
+            latitude    = #{latitude},
+            description = #{description},
+            timestamp   = #{timestamp},
+            is_default  = #{isDefault}
+        WHERE
+            user_id = #{userId}
+    </update>
+</mapper>

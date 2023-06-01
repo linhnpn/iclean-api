@@ -11,5 +11,10 @@
     <mappers>
         <mapper resource="mapper/UserMapper.xml"></mapper>
         <mapper resource="mapper/RoleMapper.xml"></mapper>
+        <mapper resource="mapper/JobMapper.xml"></mapper>
+        <mapper resource="mapper/OrderMapper.xml"></mapper>
+        <mapper resource="mapper/JobEmployeeMapper.xml"></mapper>
+        <mapper resource="mapper/AddressMapper.xml"></mapper>
+
     </mappers>
 </configuration>
