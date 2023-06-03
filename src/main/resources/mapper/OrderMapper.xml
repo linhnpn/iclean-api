@@ -21,6 +21,11 @@
         ORDER BY feedback_time desc
     </select>
 
+    <insert id="createOrder" parameterType="com.iclean.icleanapi.domain.Order">
+        INSERT INTO orders (location, longitude, latitude, work_date, work_time, order_date, renter_id, employee_id, job_id, status_id, voucher_code)
+        VALUES (#{location}, #{longitude}, #{latitude}, #{workDate}, #{workTime}, #{orderDate}, #{renterId}, #{employeeId}, #{jobId}, #{statusId}, #{voucherCode});
+    </insert>
+
     <select id="getOrderById" resultType="com.iclean.icleanapi.domain.Order">
         SELECT
             order_id,
@@ -42,6 +47,40 @@
         WHERE
             order_id = #{orderId}
         ORDER BY feedback_time desc
+    </select>
+
+    <select id="getOrder" resultType="com.iclean.icleanapi.domain.Order" parameterType="com.iclean.icleanapi.dto.OrderRequestView">
+        SELECT
+        order_id,
+        work_date,
+        work_time,
+        work_start,
+        work_end,
+        rate,
+        feedback,
+        feedback_time,
+        orderscol,
+        renter_id,
+        employee_id,
+        job_id,
+        status_id,
+        payment_id
+        FROM
+        orders
+        WHERE
+        <if test="renterId != null">
+            renter_id = #{renterId}
+        </if>
+        <if test="renterId == null">
+            1 = 1
+        </if>
+        <if test="employeeId != null">
+            AND employee_id = #{employeeId}
+        </if>
+        <if test="jobId != null">
+            AND job_id = #{jobId}
+        </if>
+        ORDER BY work_date desc
     </select>
 
     <update id="changeStatusOrder" parameterType="com.iclean.icleanapi.domain.Order">

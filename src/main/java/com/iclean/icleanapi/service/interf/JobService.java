@@ -2,6 +2,7 @@ package com.iclean.icleanapi.service.interf;
 
 
 import com.iclean.icleanapi.domain.Job;
+import com.iclean.icleanapi.dto.EmployeeJobNewRequest;
 import com.iclean.icleanapi.dto.NewAccountForm;
 import com.iclean.icleanapi.dto.ResponseObject;
 import org.springframework.http.ResponseEntity;

@@ -6,10 +6,12 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AddressMapper {
     Address getAddressByUserId(int userId);
-
+    Address getAddressDefaultByUserId(int userId);
     boolean insertUserAddress(Address address);
 
     boolean deleteUserAddress(int userId);
 
     boolean updateUserAddress (Address address);
+
+    Address getAddressById(int addressId);
 }

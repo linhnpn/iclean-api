@@ -1,5 +1,6 @@
 package com.iclean.icleanapi.controller;
 
+import com.iclean.icleanapi.dto.EmployeeJobNewRequest;
 import com.iclean.icleanapi.dto.ResponseObject;
 import com.iclean.icleanapi.service.interf.JobEmployeeService;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -8,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3030", "https://clatt-api.monoinfinity.net",
-        "https://cleaning-house-service.vercel.app", "http://localhost:8080"}, allowCredentials = "true")
 @RequestMapping("/api/v1/job-employee")
 public class JobEmployeeController {
 
@@ -19,5 +18,30 @@ public class JobEmployeeController {
     @GetMapping("")
     public ResponseEntity<ResponseObject> getAllJob(@RequestParam int jobId) {
         return jobEmployeeService.getEmployeeByJobId(jobId);
+    }
+
+    @GetMapping("/employee")
+    public ResponseEntity<ResponseObject> getAllJobByEmpl(@RequestParam int employee_id) {
+        return jobEmployeeService.getJobByEmployee(employee_id);
+    }
+
+    @GetMapping("/top-employee")
+    public ResponseEntity<ResponseObject> getTopEmployee() {
+        return jobEmployeeService.getTopEmployee();
+    }
+
+    @PostMapping("")
+    public ResponseEntity<ResponseObject> createNewJobforEmployee(@RequestBody EmployeeJobNewRequest request) {
+        return jobEmployeeService.createNewJob(request);
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<ResponseObject> deleteJob(@RequestParam int job_id, @RequestParam int employee_id) {
+        return jobEmployeeService.deleteJob(job_id, employee_id);
+    }
+
+    @PutMapping("")
+    public ResponseEntity<ResponseObject> updateJob(@RequestBody EmployeeJobNewRequest request) {
+        return jobEmployeeService.updateJob(request);
     }
 }

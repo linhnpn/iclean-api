@@ -5,16 +5,115 @@
 
 <mapper namespace="com.iclean.icleanapi.repository.JobEmployeeMapper">
 
+    <resultMap id="EmployeeJobMap" type="com.iclean.icleanapi.dto.EmployeeJobResponse">
+        <result column="job_id" property="jobId"/>
+        <result column="name" property="jobName"/>
+        <result column="thumnail_img" property="thumnailImg"/>
+        <result column="employee_id" property="employeeId"/>
+        <result column="fullname" property="employeeName"/>
+        <result column="profile_picture" property="srcPicture"/>
+        <result column="description" property="description"/>
+        <result column="price" property="price"/>
+        <result column="average_rate" property="averageRate"/>
+        <result column="timestamp" property="timestamp"/>
+        <result column="location" property="location"/>
+    </resultMap>
+
+    <resultMap id="EmployeeMap" type="com.iclean.icleanapi.dto.Employee">
+        <result column="employee_id" property="employeeId"/>
+        <result column="fullname" property="employeeName"/>
+        <result column="profile_picture" property="profilePicture"/>
+        <result column="average_rate" property="averageRate"/>
+        <result column="location" property="location"/>
+    </resultMap>
+
     <select id="getEmployeeByJobId"
-            resultType="com.iclean.icleanapi.domain.JobEmployee"
+            resultMap="EmployeeJobMap"
     >
         SELECT
-            job_id,
-            employee_id,
-            description,
-            price,
-            timestamp
-        FROM employee_job
-        WHERE job_id = #{jobId}
+        ej.job_id,
+        j.name,
+        j.thumnail_img,
+        ej.employee_id,
+        ej.description,
+        ej.price,
+        ej.timestamp,
+        u.fullname,
+        u.profile_picture,
+        Coalesce( Avg( orders.rate ), 5 ) as average_rate,
+        (SELECT addresses.description FROM addresses WHERE user_id = u.user_id AND is_default = 1) as location
+        FROM employee_job ej
+        LEFT JOIN user u ON ej.employee_id = u.user_id
+        LEFT JOIN job j ON j.job_id = ej.job_id
+        LEFT JOIN orders ON orders.employee_id = ej.employee_id
+        WHERE ej.job_id = #{jobId}
+        group by ej.employee_id
     </select>
+
+    <select id="getJobByEmployeeId"
+            resultMap="EmployeeJobMap"
+    >
+        SELECT
+        ej.job_id,
+        j.name,
+        j.thumnail_img,
+        ej.employee_id,
+        ej.description,
+        ej.price,
+        ej.timestamp,
+        u.fullname,
+        u.profile_picture,
+        Coalesce( Avg( orders.rate ), 5 ) as average_rate,
+        (SELECT addresses.description FROM addresses WHERE user_id = u.user_id AND is_default = 1) as location
+        FROM employee_job ej
+        LEFT JOIN user u ON ej.employee_id = u.user_id
+        LEFT JOIN job j ON j.job_id = ej.job_id
+        LEFT JOIN orders ON orders.employee_id = ej.employee_id
+        WHERE ej.employee_id = #{employeeId}
+        group by ej.employee_id
+    </select>
+
+    <select id="getTopEmployee"
+            resultMap="EmployeeMap"
+    >
+        SELECT
+        ej.employee_id,
+        u.fullname,
+        u.profile_picture,
+        Coalesce( Avg( orders.rate ), 5 ) as average_rate,
+        (SELECT addresses.description FROM addresses WHERE user_id = u.user_id AND is_default = 1) as location
+        FROM employee_job ej
+        LEFT JOIN user u ON ej.employee_id = u.user_id
+        LEFT JOIN orders ON orders.employee_id = ej.employee_id
+        where u.role_id = 2
+        group by ej.employee_id
+        order by average_rate
+        LIMIT 6
+    </select>
+
+    <insert id="createNewJob" parameterType="com.iclean.icleanapi.domain.JobEmployee">
+        INSERT INTO employee_job (job_id, employee_id, description, price, timestamp)
+        VALUES (#{jobId}, #{employeeId}, #{description}, #{price}, #{timestamp});
+    </insert>
+
+    <update id="updateJob" parameterType="com.iclean.icleanapi.dto.EmployeeJobNewRequest">
+        UPDATE employee_job
+        SET
+        description = #{description},
+        price = #{price},
+        timestamp = #{timestamp}
+        WHERE
+        job_id = #{jobId}
+        AND employee_id = #{employeeId}
+    </update>
+
+    <delete id="deleteJob" parameterType="com.iclean.icleanapi.dto.DeleteJobRequest">
+        DELETE
+        FROM
+        employee_job
+        WHERE
+        job_id = #{jobId}
+        AND employee_id = #{employeeId}
+    </delete>
+
 </mapper>

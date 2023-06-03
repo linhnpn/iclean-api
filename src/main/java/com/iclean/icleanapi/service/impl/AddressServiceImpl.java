@@ -1,5 +1,6 @@
 package com.iclean.icleanapi.service.impl;
 
+import com.iclean.icleanapi.constant.DefaultOrNot;
 import com.iclean.icleanapi.domain.Address;
 import com.iclean.icleanapi.domain.JobEmployee;
 import com.iclean.icleanapi.dto.ResponseObject;
@@ -41,6 +42,27 @@ public class AddressServiceImpl implements AddressService {
         } catch (Exception exception){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), exception.getMessage(), null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<ResponseObject> setDefault(int userId, int addressId) {
+        try {
+            Address address = addressMapper.getAddressDefaultByUserId(userId);
+            address.setIsDefault(DefaultOrNot.NOT_DEFAULT.getValue());
+            addressMapper.updateUserAddress(address);
+            Address addressDefault = addressMapper.getAddressById(addressId);
+            addressDefault.setIsDefault(DefaultOrNot.DEFAULT.getValue());
+            boolean check = addressMapper.updateUserAddress(address);
+            if (!check) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Set Default user's address fail!", null));
+            }
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseObject(HttpStatus.OK.toString(), "Set Default user's address done!", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), e.getMessage(), null));
         }
     }
 
