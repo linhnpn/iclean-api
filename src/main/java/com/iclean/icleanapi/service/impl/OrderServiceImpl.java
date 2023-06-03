@@ -5,6 +5,7 @@ import com.iclean.icleanapi.domain.Address;
 import com.iclean.icleanapi.domain.Order;
 import com.iclean.icleanapi.dto.FeedbackForm;
 import com.iclean.icleanapi.dto.NewOrderForm;
+import com.iclean.icleanapi.dto.OrderRequestView;
 import com.iclean.icleanapi.dto.ResponseObject;
 import com.iclean.icleanapi.repository.AddressMapper;
 import com.iclean.icleanapi.repository.OrderMapper;
@@ -113,6 +114,22 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), e.getMessage(), null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<ResponseObject> getOrder(Integer userId, Integer employeeId, Integer status) {
+        try {
+            OrderRequestView orderRequestView = new OrderRequestView(userId, employeeId, status);
+            List<Order> feedback = orderMapper.getOrder(orderRequestView);
+            if (feedback == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Job list is empty.", null));
+            }
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseObject(HttpStatus.OK.toString(), "Feedback list!", feedback));
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), exception.getMessage(), null));
         }
     }
 

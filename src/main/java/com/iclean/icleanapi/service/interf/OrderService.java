@@ -11,4 +11,6 @@ public interface OrderService {
     ResponseEntity<ResponseObject> changeStatusOrder(int orderId, int statusId);
 
     ResponseEntity<ResponseObject> createOrder(NewOrderForm form);
+
+    ResponseEntity<ResponseObject> getOrder(Integer userId, Integer employeeId, Integer status);
 }

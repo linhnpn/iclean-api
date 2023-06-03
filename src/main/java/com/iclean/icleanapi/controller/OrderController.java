@@ -19,6 +19,13 @@ public class OrderController {
         return orderService.createOrder(form);
     }
 
+    @GetMapping("")
+    public ResponseEntity<ResponseObject> getOrder(@RequestParam(required = false) Integer userId,
+                                                   @RequestParam(required = false) Integer employeeId,
+                                                   @RequestParam(required = false) Integer status) {
+        return orderService.getOrder(userId, employeeId, status);
+    }
+
     @GetMapping("/feedback")
     public ResponseEntity<ResponseObject> getFeedback() {
         return orderService.getFeedback();

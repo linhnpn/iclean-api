@@ -1,5 +1,6 @@
 package com.iclean.icleanapi.service.impl;
 
+import com.iclean.icleanapi.dto.EmployeeJobNewRequest;
 import com.iclean.icleanapi.dto.FeedbackForm;
 import com.iclean.icleanapi.dto.ResponseObject;
 import com.iclean.icleanapi.repository.JobMapper;
