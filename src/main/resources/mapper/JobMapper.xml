@@ -5,6 +5,13 @@
 
 <mapper namespace="com.iclean.icleanapi.repository.JobMapper">
 
+    <resultMap id="EmployeeJobMap" type="com.iclean.icleanapi.dto.EmployeeJobResponse">
+        <result column="job_id" property="jobId"/>
+        <result column="name" property="jobName"/>
+        <result column="employee_id" property="employeeId"/>
+        <result column="fullname" property="employeeName"/>
+    </resultMap>
+
     <select id="getAllJob" resultType="com.iclean.icleanapi.domain.Job">
         SELECT
             job_id,
@@ -18,4 +25,22 @@
             money_penalty
         FROM job
     </select>
+
+    <select id="getJobById" resultMap="EmployeeJobMap">
+        SELECT
+            job.job_id,
+            job.name,
+            employee_job.employee_id,
+            user.fullname
+        FROM
+            job
+        LEFT JOIN
+            employee_job ON job.job_id = employee_job.job_id
+        LEFT JOIN
+            user ON employee_job.employee_id = user.user_id
+        WHERE
+            job.job_id = #{jobId} AND
+            employee_job.employee_id = #{employeeId}
+    </select>
+
 </mapper>
