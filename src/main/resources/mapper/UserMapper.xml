@@ -16,7 +16,7 @@
         phone,
         email,
         bio,
-        profie_picture,
+        profile_picture,
         role_name
         FROM user, roles where user.username = #{username}
             AND roles.role_id = user.role_id

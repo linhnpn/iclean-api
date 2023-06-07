@@ -16,6 +16,8 @@
         <mapper resource="mapper/JobEmployeeMapper.xml"></mapper>
         <mapper resource="mapper/AddressMapper.xml"></mapper>
         <mapper resource="mapper/FeedbackMapper.xml"></mapper>
+        <mapper resource="mapper/NotificationMapper.xml"></mapper>
+
 
     </mappers>
 </configuration>

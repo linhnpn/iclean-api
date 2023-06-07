@@ -41,7 +41,8 @@
             employee_id,
             job_id,
             status_id,
-            payment_id
+            payment_id,
+            order_date
         FROM
             orders
         WHERE
