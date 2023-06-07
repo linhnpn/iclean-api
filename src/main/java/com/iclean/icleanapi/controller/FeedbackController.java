@@ -2,7 +2,6 @@ package com.iclean.icleanapi.controller;
 
 import com.iclean.icleanapi.dto.FeedbackRequest;
 import com.iclean.icleanapi.dto.ResponseObject;
-import com.iclean.icleanapi.service.interf.AddressService;
 import com.iclean.icleanapi.service.interf.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +13,8 @@ public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
     @GetMapping("/feedback")
-    public ResponseEntity<ResponseObject> getFeedback(@RequestParam int job_id, @RequestParam int employee_id) {
-        return feedbackService.getAllFeedback(job_id, employee_id);
+    public ResponseEntity<ResponseObject> getFeedback(@RequestParam int job_id, @RequestParam int employee_id, @RequestParam(required = false) double rate) {
+        return feedbackService.getAllFeedback(job_id, employee_id, rate);
     }
 
     @PostMapping("/feedback")
