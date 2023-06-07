@@ -21,11 +21,12 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     private FeedbackMapper feedbackMapper;
     @Override
-    public ResponseEntity<ResponseObject> getAllFeedback(int jobId, int employeeId) {
+    public ResponseEntity<ResponseObject> getAllFeedback(int jobId, int employeeId, double rate) {
         try {
             FeedbackForm form = new FeedbackForm();
             form.setJobId(jobId);
             form.setEmployeeId(employeeId);
+            form.setRate(rate);
             List<Feedback> feedback = feedbackMapper.getFeedback(form);
             if (feedback == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Feedback list is empty.", null));

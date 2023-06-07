@@ -26,6 +26,9 @@
         LEFT JOIN user u ON o.renter_id = u.user_id
         WHERE o.job_id = #{jobId}
         AND o.employee_id = #{employeeId}
+        <if test="rate != null">
+            AND o.rate = #{rate}
+        </if>
         AND o.feedback IS NOT NULL
         ORDER BY feedback_time desc
     </select>
