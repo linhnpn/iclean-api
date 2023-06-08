@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
                 Notification notificationForemployee = new Notification();
                 notificationForemployee.setUserId(existOrder.getEmployeeId());
 
-                if (existOrder.getStatusId().equals(StatusOrder.IN_PROCESS.getValue())) {
+                if (existOrder.getStatusId().equals(StatusOrder.UPCOMING.getValue())) {
                     //set workStart = now
                     existOrder.setWorkStart(LocalDateTime.parse(formatDateTime, formatter));
                     notificationForUser.setTimestamp(existOrder.getWorkStart());
@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
                     notificationForemployee.setDetail(job.getJobName() + " service, is in process!");
 
                 } else if (existOrder.getStatusId().equals(StatusOrder.DONE.getValue())) {
-                    if (!existOrder.getWorkStart().plusHours(existOrder.getWorkTime()).isBefore(LocalDateTime.now())) {
+                    if (!existOrder.getWorkDate().plusHours(existOrder.getWorkTime()).isBefore(LocalDateTime.now())) {
                         return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).body(new ResponseObject(HttpStatus.FAILED_DEPENDENCY.toString(), "Cannot done before workDate!", null));
                     }
                     //set workEnd = now
@@ -92,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
 
                     notificationForUser.setDetail("Your booking " + job.getJobName() + " from staff " + job.getEmployeeName() + " is done");
                     notificationForemployee.setDetail(job.getJobName() + " service, is done!");
-                } else if (existOrder.getStatusId().equals(StatusOrder.UPCOMING.getValue())) {
+                } else if (existOrder.getStatusId().equals(StatusOrder.IN_PROCESS.getValue())) {
                     //set workEnd = now
                     existOrder.setWorkStart(LocalDateTime.parse(formatDateTime, formatter));
                     notificationForUser.setTimestamp(existOrder.getWorkStart());
@@ -162,18 +162,18 @@ public class OrderServiceImpl implements OrderService {
             notificationForUser.setTimestamp(order.getOrderDate());
             notificationForUser.setUserId(order.getRenterId());
 
-            Notification notificationForemployee = new Notification();
-            notificationForemployee.setTimestamp(order.getOrderDate());
-            notificationForemployee.setUserId(order.getEmployeeId());
+            Notification notificationForEmployee = new Notification();
+            notificationForEmployee.setTimestamp(order.getOrderDate());
+            notificationForEmployee.setUserId(order.getEmployeeId());
 
             boolean check = orderMapper.createOrder(order);
             if (check) {
                 //ADD NOTI FOR USER AND STAFF
                 notificationForUser.setDetail("You have successfully booked " + job.getJobName() + " from staff " + job.getEmployeeName() + " , please wait for our staff to confirm!");
-                notificationForemployee.setDetail("You have just got a new booking for " + job.getJobName() + " service, please confirm with the customer!");
+                notificationForEmployee.setDetail("You have just got a new booking for " + job.getJobName() + " service, please confirm with the customer!");
                 boolean checkNotiforUser = notificationMapper.addNotification(notificationForUser);
                 if (checkNotiforUser) {
-                    boolean checkNotiForEmployee = notificationMapper.addNotification(notificationForemployee);
+                    boolean checkNotiForEmployee = notificationMapper.addNotification(notificationForEmployee);
                     if (checkNotiForEmployee) {
                         return ResponseEntity.status(HttpStatus.OK)
                                 .body(new ResponseObject(HttpStatus.OK.toString(), "Create Order success!", null));

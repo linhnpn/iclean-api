@@ -34,8 +34,6 @@ public class Order {
 
     private LocalDateTime feedbackTime;
 
-    private String orderscol;
-
     private Integer renterId;
 
     private Integer employeeId;

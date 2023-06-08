@@ -21,7 +21,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     private FeedbackMapper feedbackMapper;
     @Override
-    public ResponseEntity<ResponseObject> getAllFeedback(int jobId, int employeeId, double rate) {
+    public ResponseEntity<ResponseObject> getAllFeedback(int jobId, int employeeId, Double rate) {
         try {
             FeedbackForm form = new FeedbackForm();
             form.setJobId(jobId);

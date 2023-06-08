@@ -5,6 +5,6 @@ import com.iclean.icleanapi.dto.ResponseObject;
 import org.springframework.http.ResponseEntity;
 
 public interface FeedbackService {
-    ResponseEntity<ResponseObject> getAllFeedback(int jobId, int employeeId, double rate);
+    ResponseEntity<ResponseObject> getAllFeedback(int jobId, int employeeId, Double rate);
     ResponseEntity<ResponseObject> createFeedback(FeedbackRequest feedbackRequest);
 }

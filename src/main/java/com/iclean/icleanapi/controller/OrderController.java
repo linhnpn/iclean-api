@@ -26,11 +26,6 @@ public class OrderController {
         return orderService.getOrder(userId, employeeId, status);
     }
 
-    @GetMapping("/feedback")
-    public ResponseEntity<ResponseObject> getFeedback() {
-        return orderService.getFeedback();
-    }
-
     @PutMapping("/status")
     public ResponseEntity<ResponseObject> changeStatus(@RequestBody ChangeStatusOrderForm orderForm) {
         return orderService.changeStatusOrder(orderForm.getOrder_id(), orderForm.getStatus_id());
