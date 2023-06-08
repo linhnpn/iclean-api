@@ -21,4 +21,5 @@ public class EmployeeJobResponse {
     private Double averageRate;
     private Date timestamp;
     private String location;
+    private Integer countRate;
 }

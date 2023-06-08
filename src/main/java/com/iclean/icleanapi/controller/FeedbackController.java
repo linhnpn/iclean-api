@@ -13,7 +13,7 @@ public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
     @GetMapping("/feedback")
-    public ResponseEntity<ResponseObject> getFeedback(@RequestParam int job_id, @RequestParam int employee_id, @RequestParam(required = false) double rate) {
+    public ResponseEntity<ResponseObject> getFeedback(@RequestParam int job_id, @RequestParam int employee_id, @RequestParam(required = false) Double rate) {
         return feedbackService.getAllFeedback(job_id, employee_id, rate);
     }
 

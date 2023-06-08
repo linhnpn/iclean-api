@@ -11,7 +11,6 @@
             rate,
             feedback,
             feedback_time,
-            orderscol,
             renter_id,
             employee_id,
             job_id,
@@ -36,7 +35,6 @@
             rate,
             feedback,
             feedback_time,
-            orderscol,
             renter_id,
             employee_id,
             job_id,
@@ -78,8 +76,8 @@
         <if test="employeeId != null">
             AND employee_id = #{employeeId}
         </if>
-        <if test="jobId != null">
-            AND job_id = #{jobId}
+        <if test="status != null">
+            AND job_id = #{status}
         </if>
         ORDER BY work_date desc
     </select>

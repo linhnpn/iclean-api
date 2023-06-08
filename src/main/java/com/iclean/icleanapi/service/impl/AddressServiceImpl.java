@@ -28,10 +28,6 @@ public class AddressServiceImpl implements AddressService {
             LocalDateTime now = LocalDateTime.now();
             String formatDateTime = now.format(formatter);
 
-            Address existAddressUser = addressMapper.getAddressByUserId(address.getUserId());
-            if (existAddressUser != null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "User already have address.", null));
-            }
             address.setTimestamp(LocalDateTime.parse(formatDateTime, formatter));
             boolean check = addressMapper.insertUserAddress(address);
             if (!check){
@@ -49,8 +45,10 @@ public class AddressServiceImpl implements AddressService {
     public ResponseEntity<ResponseObject> setDefault(int userId, int addressId) {
         try {
             Address address = addressMapper.getAddressDefaultByUserId(userId);
-            address.setIsDefault(DefaultOrNot.NOT_DEFAULT.getValue());
-            addressMapper.updateUserAddress(address);
+            if (address != null) {
+                address.setIsDefault(DefaultOrNot.NOT_DEFAULT.getValue());
+                addressMapper.updateUserAddress(address);
+            }
             Address addressDefault = addressMapper.getAddressById(addressId);
             addressDefault.setIsDefault(DefaultOrNot.DEFAULT.getValue());
             boolean check = addressMapper.updateUserAddress(address);

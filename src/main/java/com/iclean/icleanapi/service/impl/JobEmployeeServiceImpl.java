@@ -5,10 +5,8 @@ import com.iclean.icleanapi.domain.Address;
 import com.iclean.icleanapi.domain.JobEmployee;
 import com.iclean.icleanapi.domain.Order;
 import com.iclean.icleanapi.domain.User;
-import com.iclean.icleanapi.dto.DeleteJobRequest;
-import com.iclean.icleanapi.dto.EmployeeJobNewRequest;
-import com.iclean.icleanapi.dto.EmployeeJobResponse;
-import com.iclean.icleanapi.dto.ResponseObject;
+import com.iclean.icleanapi.dto.*;
+import com.iclean.icleanapi.repository.FeedbackMapper;
 import com.iclean.icleanapi.repository.JobEmployeeMapper;
 import com.iclean.icleanapi.service.interf.JobEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +24,22 @@ public class JobEmployeeServiceImpl implements JobEmployeeService {
 
     @Autowired
     private JobEmployeeMapper jobEmployeeMapper;
+    @Autowired
+    private FeedbackMapper feedbackMapper;
 
     @Override
     public ResponseEntity<ResponseObject> getEmployeeByJobId(int jobId) {
 
         try{
             List<EmployeeJobResponse> emplJob = jobEmployeeMapper.getEmployeeByJobId(jobId);
-            if (emplJob == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Job list is empty.", null));
+            if (!emplJob.isEmpty()) {
+                for (EmployeeJobResponse employeeJobResponse : emplJob) {
+                    FeedbackForm form = new FeedbackForm();
+                    form.setEmployeeId(employeeJobResponse.getEmployeeId());
+                    form.setJobId(employeeJobResponse.getJobId());
+                    int count = feedbackMapper.getFeedback(form).size();
+                    employeeJobResponse.setCountRate(count);
+                }
             }
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseObject(HttpStatus.OK.toString(), "Employee list!", emplJob));
