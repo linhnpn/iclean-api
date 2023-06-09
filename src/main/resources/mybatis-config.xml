@@ -17,7 +17,7 @@
         <mapper resource="mapper/AddressMapper.xml"></mapper>
         <mapper resource="mapper/FeedbackMapper.xml"></mapper>
         <mapper resource="mapper/NotificationMapper.xml"></mapper>
-
+        <mapper resource="mapper/VoucherMapper.xml"></mapper>
 
     </mappers>
 </configuration>

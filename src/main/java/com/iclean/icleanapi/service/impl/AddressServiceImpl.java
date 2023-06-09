@@ -86,7 +86,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public ResponseEntity<ResponseObject> updateUserAddress(Address address) {
         try{
-            Address existAddressUser = addressMapper.getAddressByUserId(address.getUserId());
+            Address existAddressUser = addressMapper.getAddressById(address.getAddressId());
             if (existAddressUser == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "User's address doesn't exist", null));
             }
@@ -96,6 +96,21 @@ public class AddressServiceImpl implements AddressService {
             }
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseObject(HttpStatus.OK.toString(), "Update user's address done!", address));
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), exception.getMessage(), null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<ResponseObject> findAllAddress(Integer userId) {
+        try{
+            List<Address> existAddressUser = addressMapper.getAllAddressByUserId(userId);
+            if (existAddressUser.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "User's address doesn't exist", null));
+            }
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseObject(HttpStatus.OK.toString(), "Delete user's address done!", existAddressUser));
         } catch (Exception exception){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), exception.getMessage(), null));

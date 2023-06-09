@@ -18,6 +18,7 @@ public class SwaggerConfig {
 
         List<Server> servers = new ArrayList<>();
         servers.add(new Server().url("http://localhost:8080"));
+        servers.add(new Server().url("https://i-clean-api.herokuapp.com"));
         final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
                 .servers(servers)

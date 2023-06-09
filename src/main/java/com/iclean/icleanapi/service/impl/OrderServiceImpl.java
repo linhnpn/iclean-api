@@ -4,11 +4,9 @@ import com.iclean.icleanapi.constant.StatusOrder;
 import com.iclean.icleanapi.domain.Address;
 import com.iclean.icleanapi.domain.Notification;
 import com.iclean.icleanapi.domain.Order;
+import com.iclean.icleanapi.domain.Voucher;
 import com.iclean.icleanapi.dto.*;
-import com.iclean.icleanapi.repository.AddressMapper;
-import com.iclean.icleanapi.repository.JobMapper;
-import com.iclean.icleanapi.repository.NotificationMapper;
-import com.iclean.icleanapi.repository.OrderMapper;
+import com.iclean.icleanapi.repository.*;
 import com.iclean.icleanapi.service.interf.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +30,8 @@ public class OrderServiceImpl implements OrderService {
     private NotificationMapper notificationMapper;
     @Autowired
     private JobMapper jobMapper;
+    @Autowired
+    private VoucherMapper voucherMapper;
 
     @Override
     public ResponseEntity<ResponseObject> getFeedback() {
@@ -141,7 +141,19 @@ public class OrderServiceImpl implements OrderService {
             LocalDateTime now = LocalDateTime.now();
             String formatDateTime = now.format(formatter);
             form.setOrderDate(LocalDateTime.parse(formatDateTime, formatter));
+            Voucher voucher = new Voucher();
             Order order = new Order();
+
+            if ( form.getVoucherCode() != null || "".equals(form.getVoucherCode())) {
+                voucher = voucherMapper.getVoucherByCode(form.getVoucherCode());
+                if (voucher.getVoucherId() != null && !form.getVoucherCode().isEmpty()) {
+                    order.setVoucherCode(voucher.getVoucherCode());
+                } else if (form.getVoucherCode() == null && form.getVoucherCode() != null) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Invalid Voucher", null));
+                }
+            }
+
 
             order.setLocation(address.getDescription());
             order.setLongitude(address.getLongitude());
@@ -156,7 +168,6 @@ public class OrderServiceImpl implements OrderService {
             order.setVoucherCode(form.getVoucherCode());
 
             //get info Job Order
-            EmployeeJobResponse job = jobMapper.getJobById(order.getJobId(), order.getEmployeeId());
 
             Notification notificationForUser = new Notification();
             notificationForUser.setTimestamp(order.getOrderDate());
@@ -167,6 +178,7 @@ public class OrderServiceImpl implements OrderService {
             notificationForEmployee.setUserId(order.getEmployeeId());
 
             boolean check = orderMapper.createOrder(order);
+            EmployeeJobResponse job = jobMapper.getJobById(order.getJobId(), order.getEmployeeId());
             if (check) {
                 //ADD NOTI FOR USER AND STAFF
                 notificationForUser.setDetail("You have successfully booked " + job.getJobName() + " from staff " + job.getEmployeeName() + " , please wait for our staff to confirm!");
@@ -208,7 +220,7 @@ public class OrderServiceImpl implements OrderService {
     public ResponseEntity<ResponseObject> getOrder(Integer userId, Integer employeeId, Integer status) {
         try {
             OrderRequestView orderRequestView = new OrderRequestView(userId, employeeId, status);
-            List<Order> feedback = orderMapper.getOrder(orderRequestView);
+            List<OrderResponseDto> feedback = orderMapper.getOrder(orderRequestView);
             if (feedback == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Job list is empty.", null));
             }

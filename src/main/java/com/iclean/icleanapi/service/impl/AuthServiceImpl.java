@@ -1,6 +1,7 @@
 package com.iclean.icleanapi.service.impl;
 
 import com.iclean.icleanapi.config.JwtUtils;
+import com.iclean.icleanapi.domain.UserDto;
 import com.iclean.icleanapi.repository.RoleMapper;
 import com.iclean.icleanapi.repository.UserMapper;
 import com.iclean.icleanapi.domain.User;
@@ -47,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
             if (authentication != null) {
                 UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
                 String accessToken = jwtUtils.createToken(userPrinciple);
-                User account = userMapper.findUserByUserName(form.getUsername());
+                UserDto account = userMapper.findUserDtoByUserName(form.getUsername());
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(HttpStatus.OK.toString(), "Login success!", new JwtResponse(accessToken, account)));
             } else
                 ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseObject(HttpStatus.UNAUTHORIZED.toString(), "Wrong username or password.", null));

@@ -17,4 +17,6 @@ public class Address {
     private LocalDateTime timestamp;
     private int isDefault;
     private int userId;
+    private String street;
+    private String locationName;
 }

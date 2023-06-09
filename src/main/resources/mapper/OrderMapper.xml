@@ -5,6 +5,24 @@
 
 <mapper namespace="com.iclean.icleanapi.repository.OrderMapper">
 
+    <resultMap id="OrderResponseMap" type="com.iclean.icleanapi.dto.OrderResponseDto">
+        <result column="order_id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="empl_id" property="empId"/>
+        <result column="job_id" property="jobId"/>
+        <result column="work_time" property="workTime"/>
+        <result column="price" property="price"/>
+        <result column="user_name" property="username"/>
+        <result column="empl_name" property="empName"/>
+        <result column="status" property="status"/>
+        <result column="location" property="location"/>
+        <result column="job_name" property="jobName"/>
+        <result column="description" property="description"/>
+        <result column="renter_picture" property="imgRenter"/>
+        <result column="employee_picture" property="imgEmployee"/>
+        <result column="order_date" property="timestamp"/>
+    </resultMap>
+
     <select id="getFeedback" resultType="com.iclean.icleanapi.dto.FeedbackForm">
         SELECT
             order_id,
@@ -48,36 +66,42 @@
         ORDER BY feedback_time desc
     </select>
 
-    <select id="getOrder" resultType="com.iclean.icleanapi.domain.Order" parameterType="com.iclean.icleanapi.dto.OrderRequestView">
+    <select id="getOrder" resultMap="OrderResponseMap" parameterType="com.iclean.icleanapi.dto.OrderRequestView">
         SELECT
-        order_id,
-        work_date,
-        work_time,
-        work_start,
-        work_end,
-        rate,
-        feedback,
-        feedback_time,
-        orderscol,
-        renter_id,
-        employee_id,
-        job_id,
-        status_id,
-        payment_id
+        o.order_id,
+        u.user_id,
+        empl.user_id as empl_id,
+        j.job_id,
+        o.work_time,
+        o.price,
+        u.fullname as user_name,
+        empl.fullname as empl_name,
+        st.name as status,
+        o.location,
+        j.name as job_name,
+        ej.description as description,
+        u.profile_picture as renter_picture,
+        empl.profile_picture as employee_picture,
+        o.order_date
         FROM
-        orders
+        orders o
+        LEFT JOIN user u ON u.user_id = o.renter_id
+        LEFT JOIN employee_job ej ON (ej.employee_id = o.employee_id AND ej.job_id = o.job_id)
+        LEFT JOIN user empl ON ej.employee_id = empl.user_id
+        LEFT JOIN status st ON o.status_id = st.status_id
+        LEFT JOIN job j ON j.job_id = ej.job_id
         WHERE
         <if test="renterId != null">
-            renter_id = #{renterId}
+            o.renter_id = #{renterId}
         </if>
         <if test="renterId == null">
             1 = 1
         </if>
         <if test="employeeId != null">
-            AND employee_id = #{employeeId}
+            AND o.employee_id = #{employeeId}
         </if>
         <if test="status != null">
-            AND job_id = #{status}
+            AND o.status_id = #{status}
         </if>
         ORDER BY work_date desc
     </select>

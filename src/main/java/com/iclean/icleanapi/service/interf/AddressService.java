@@ -13,4 +13,5 @@ public interface AddressService {
 
     ResponseEntity<ResponseObject> updateUserAddress(Address address);
 
+    ResponseEntity<ResponseObject> findAllAddress(Integer userId);
 }

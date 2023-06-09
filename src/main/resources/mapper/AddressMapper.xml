@@ -15,10 +15,30 @@
             description,
             timestamp,
             is_default,
-            user_id
+            user_id,
+            street,
+            location_name
         FROM addresses
         WHERE
             user_id = #{userId}
+    </select>
+
+    <select id="getAllAddressByUserId"
+            resultType="com.iclean.icleanapi.domain.Address"
+    >
+        SELECT
+        address_id,
+        longitude,
+        latitude,
+        description,
+        timestamp,
+        is_default,
+        user_id,
+        street,
+        location_name
+        FROM addresses
+        WHERE
+        user_id = #{userId}
     </select>
 
     <select id="getAddressById"
@@ -31,7 +51,9 @@
         description,
         timestamp,
         is_default,
-        user_id
+        user_id,
+        street,
+        location_name
         FROM addresses
         WHERE
         address_id = #{address_id}
@@ -47,7 +69,9 @@
         description,
         timestamp,
         is_default,
-        user_id
+        user_id,
+        street,
+        location_name
         FROM addresses
         WHERE
         user_id = #{userId}
@@ -62,7 +86,9 @@
             description,
             timestamp,
             is_default,
-            user_id
+            user_id,
+            street,
+            location_name
         )
         VALUES
         (
@@ -71,7 +97,9 @@
             #{description},
             #{timestamp},
             #{isDefault},
-            #{userId}
+            #{userId},
+            #{street},
+            #{locationName}
         )
     </insert>
 
@@ -90,8 +118,10 @@
             latitude    = #{latitude},
             description = #{description},
             timestamp   = #{timestamp},
-            is_default  = #{isDefault}
+            is_default  = #{isDefault},
+            street      = #{street},
+            location_name= #{locationName}
         WHERE
-            user_id = #{userId}
+        address_id = #{addressId}
     </update>
 </mapper>
