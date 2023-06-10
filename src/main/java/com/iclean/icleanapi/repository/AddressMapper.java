@@ -11,7 +11,7 @@ public interface AddressMapper {
     Address getAddressDefaultByUserId(int userId);
     boolean insertUserAddress(Address address);
 
-    boolean deleteUserAddress(int userId);
+    boolean deleteUserAddress(int addressId);
 
     boolean updateUserAddress (Address address);
 

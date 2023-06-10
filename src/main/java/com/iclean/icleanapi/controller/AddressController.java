@@ -24,9 +24,9 @@ public class AddressController {
         return addressService.deleteUserAddress(userId);
     }
 
-    @GetMapping("{userId}")
-    public ResponseEntity<ResponseObject> deleteUserAddress(@PathVariable Integer userId) {
-        return addressService.findAllAddress(userId);
+    @GetMapping("{addressId}")
+    public ResponseEntity<ResponseObject> deleteUserAddress(Integer addressId) {
+        return addressService.findAllAddress(addressId);
     }
 
     @PutMapping("")

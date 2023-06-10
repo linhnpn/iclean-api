@@ -108,7 +108,7 @@
         FROM
             addresses
         WHERE
-            user_id = #{userId}
+            address_id = #{addressId}
     </delete>
 
     <update id="updateUserAddress" parameterType="com.iclean.icleanapi.domain.Address">

@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
     User findUserByUserName(String username);
     UserDto findUserDtoByUserName(String username);
+    UserDto findUserDtoByUserNameNoAddressDefault(String username);
     void createUser(User user);
     void changePassword(ChangePasswordForm form);
 }

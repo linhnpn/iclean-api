@@ -1,7 +1,9 @@
 package com.iclean.icleanapi.service.impl;
 
 import com.iclean.icleanapi.config.JwtUtils;
+import com.iclean.icleanapi.domain.Address;
 import com.iclean.icleanapi.domain.UserDto;
+import com.iclean.icleanapi.repository.AddressMapper;
 import com.iclean.icleanapi.repository.RoleMapper;
 import com.iclean.icleanapi.repository.UserMapper;
 import com.iclean.icleanapi.domain.User;
@@ -36,6 +38,8 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private RoleMapper roleMapper;
     @Autowired
+    private AddressMapper addressMapper;
+    @Autowired
     private JwtUtils jwtUtils;
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -48,7 +52,13 @@ public class AuthServiceImpl implements AuthService {
             if (authentication != null) {
                 UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
                 String accessToken = jwtUtils.createToken(userPrinciple);
-                UserDto account = userMapper.findUserDtoByUserName(form.getUsername());
+                Address address = addressMapper.getAddressDefaultByUserId(userPrinciple.getId());
+                UserDto account = null;
+                if (address != null) {
+                    account = userMapper.findUserDtoByUserName(form.getUsername());
+                }else {
+                    account = userMapper.findUserDtoByUserNameNoAddressDefault(form.getUsername());
+                }
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject(HttpStatus.OK.toString(), "Login success!", new JwtResponse(accessToken, account)));
             } else
                 ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseObject(HttpStatus.UNAUTHORIZED.toString(), "Wrong username or password.", null));
@@ -70,12 +80,12 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<ResponseObject> createAccount(NewAccountForm form) {
         if (userMapper.findUserByUserName(form.getUsername()) == null) {
             try {
-                int role_id = roleMapper.findRoleByRoleName("renter").getRoleId();
+                int role_id = roleMapper.findRoleByRoleName("user").getRoleId();
                 User user = new User();
                 user.setUsername(form.getUsername());
                 user.setPassword(passwordEncoder.encode(form.getPassword()));
                 user.setFullname(form.getFullname());
-                user.setDateOfBirth(Date.valueOf(form.getDateOfBirth()));
+                user.setDate_of_birth(Date.valueOf(form.getDateOfBirth()));
                 user.setGender(form.getGender());
                 user.setPhone(form.getPhone());
                 user.setEmail(form.getEmail());
