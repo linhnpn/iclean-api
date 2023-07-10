@@ -24,6 +24,11 @@ public class AddressController {
         return addressService.deleteUserAddress(userId);
     }
 
+    @GetMapping("{addressId}")
+    public ResponseEntity<ResponseObject> deleteUserAddress(Integer addressId) {
+        return addressService.findAllAddress(addressId);
+    }
+
     @PutMapping("")
     public ResponseEntity<ResponseObject> updateUserAddress(@RequestBody Address address) {
         return addressService.updateUserAddress(address);

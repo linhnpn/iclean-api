@@ -13,6 +13,7 @@
         fullname,
         date_of_birth,
         gender,
+        point,
         phone,
         email,
         bio,
@@ -20,6 +21,56 @@
         role_name
         FROM user, roles where user.username = #{username}
             AND roles.role_id = user.role_id
+    </select>
+
+    <select id="findUserDtoByUserName" parameterType="com.iclean.icleanapi.domain.User" resultType="com.iclean.icleanapi.domain.UserDto">
+        SELECT
+        user.user_id,
+        username,
+        password,
+        fullname,
+        date_of_birth,
+        gender,
+        point,
+        phone,
+        email,
+        bio,
+        profile_picture,
+        role_name,
+        addresses.description,
+        addresses.longitude,
+        addresses.latitude,
+        street,
+        location_name
+        FROM user, roles, addresses where user.username = #{username}
+        AND roles.role_id = user.role_id
+        AND user.user_id = addresses.user_id
+        AND addresses.is_default = 1
+    </select>
+
+    <select id="findUserDtoByUserNameNoAddressDefault" parameterType="com.iclean.icleanapi.domain.User" resultType="com.iclean.icleanapi.domain.UserDto">
+        SELECT
+        user.user_id,
+        user.username,
+        user.password,
+        user.fullname,
+        user.date_of_birth,
+        user.gender,
+        user.point,
+        user.phone,
+        user.email,
+        user.bio,
+        user.profile_picture,
+        r.role_name,
+        addr.description,
+        addr.longitude,
+        addr.latitude,
+        addr.street,
+        addr.location_name
+        FROM user user
+        LEFT JOIN roles r ON user.role_id = r.role_id
+        LEFT JOIN addresses addr ON addr.user_id = user.user_id
+        WHERE user.username = #{username}
     </select>
 
     <insert id="createUser" parameterType="com.iclean.icleanapi.domain.User">

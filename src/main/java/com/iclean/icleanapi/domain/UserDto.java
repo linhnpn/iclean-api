@@ -5,16 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class UserDto {
     private int userId;
     private String username;
-    private String password;
     private String fullname;
-    private Date date_of_birth;
+    private Date dateOfBirth;
     private String gender;
     private String phone;
     private String email;
@@ -22,5 +20,9 @@ public class User {
     private Integer point;
     private String profilePicture;
     private String roleName;
-    private int role_id;
+    private Double longitude;
+    private Double latitude;
+    private String description;
+    private String street;
+    private String locationName;
 }

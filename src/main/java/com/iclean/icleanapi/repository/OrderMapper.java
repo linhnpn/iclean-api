@@ -3,6 +3,7 @@ package com.iclean.icleanapi.repository;
 import com.iclean.icleanapi.domain.Order;
 import com.iclean.icleanapi.dto.NewOrderForm;
 import com.iclean.icleanapi.dto.OrderRequestView;
+import com.iclean.icleanapi.dto.OrderResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface OrderMapper {
 
     boolean createOrder(Order order);
 
-    List<Order> getOrder(OrderRequestView orderRequestView);
+    List<OrderResponseDto> getOrder(OrderRequestView orderRequestView);
 }

@@ -1,16 +1,14 @@
 package com.iclean.icleanapi.service.interf;
 
 import com.iclean.icleanapi.dto.NewOrderForm;
+import com.iclean.icleanapi.dto.NewOrderProductForm;
 import com.iclean.icleanapi.dto.ResponseObject;
 import org.springframework.http.ResponseEntity;
 
-public interface OrderService {
-
-    ResponseEntity<ResponseObject> getFeedback();
-
+public interface OrderProductService {
     ResponseEntity<ResponseObject> changeStatusOrder(int orderId, int statusId);
 
-    ResponseEntity<ResponseObject> createOrder(NewOrderForm form);
+    ResponseEntity<ResponseObject> createOrderProduct(NewOrderProductForm form);
 
-    ResponseEntity<ResponseObject> getOrder(Integer userId, Integer empuserloyeeId, Integer status);
+    ResponseEntity<ResponseObject> getOrderProduct(Integer userId, String category, Integer status);
 }

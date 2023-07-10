@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iclean.icleanapi.repository.MoneyMapper">
+
+    <resultMap id="MoneyMap" type="com.iclean.icleanapi.dto.MoneyResponse">
+        <result column="user_id" property="userId"/>
+        <result column="point" property="money"/>
+    </resultMap>
+
+    <select id="getMoneyByUserId" resultMap="MoneyMap">
+        SELECT COALESCE(point, 0) AS point, user_id
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+
+    <update id="updateMoney" parameterType="com.iclean.icleanapi.dto.MoneyRequest">
+        update user
+        set
+        point = #{newMoney}
+        where user_id = #{userId}
+    </update>
+
+</mapper>
