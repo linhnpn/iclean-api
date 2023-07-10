@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iclean.icleanapi.repository.ProductMapper">
+
+    <resultMap id="ProductMap" type="com.iclean.icleanapi.domain.Product">
+        <result column="product_id" property="productId"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="price" property="price"/>
+        <result column="category" property="category"/>
+        <result column="img_link" property="imgLink"/>
+        <result column="link" property="link"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <select id="getAllJob" resultType="com.iclean.icleanapi.domain.Job">
+        SELECT
+        job_id,
+        name,
+        min_price,
+        max_price,
+        thumnail_img,
+        measure_unit,
+        time_penalty,
+        point_penalty,
+        money_penalty
+        FROM job
+    </select>
+
+    <select id="getProductByID" resultMap="ProductMap">
+        SELECT
+        product_id,
+        title,
+        description,
+        price,
+        category,
+        img_link,
+        link,
+        created_at,
+        updated_at
+        FROM
+        products
+        WHERE
+        products.product_id = #{productId}
+    </select>
+
+</mapper>

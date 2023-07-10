@@ -18,6 +18,10 @@
         <mapper resource="mapper/FeedbackMapper.xml"></mapper>
         <mapper resource="mapper/NotificationMapper.xml"></mapper>
         <mapper resource="mapper/VoucherMapper.xml"></mapper>
+        <mapper resource="mapper/MoneyMapper.xml"></mapper>
+        <mapper resource="mapper/ProductMapper.xml"></mapper>
+        <mapper resource="mapper/OrderProductMapper.xml"></mapper>
+        <mapper resource="mapper/OrderItemMapper.xml"></mapper>
 
     </mappers>
 </configuration>

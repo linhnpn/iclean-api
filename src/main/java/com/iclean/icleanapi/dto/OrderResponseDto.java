@@ -13,4 +13,5 @@ public class OrderResponseDto {
     private Integer id, userId, empId, jobId, workTime, price;
     private String username, empName, status, location, jobName, description, imgRenter, imgEmployee;
     private LocalDateTime timestamp;
+    private Double latitude, longitude;
 }

@@ -15,6 +15,8 @@
         <result column="user_name" property="username"/>
         <result column="empl_name" property="empName"/>
         <result column="status" property="status"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
         <result column="location" property="location"/>
         <result column="job_name" property="jobName"/>
         <result column="description" property="description"/>
@@ -78,6 +80,8 @@
         empl.fullname as empl_name,
         st.name as status,
         o.location,
+        o.longitude,
+        o.latitude,
         j.name as job_name,
         ej.description as description,
         u.profile_picture as renter_picture,
