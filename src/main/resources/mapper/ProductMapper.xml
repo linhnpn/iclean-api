@@ -17,20 +17,6 @@
         <result column="updated_at" property="updatedAt"/>
     </resultMap>
 
-    <select id="getAllJob" resultType="com.iclean.icleanapi.domain.Job">
-        SELECT
-        job_id,
-        name,
-        min_price,
-        max_price,
-        thumnail_img,
-        measure_unit,
-        time_penalty,
-        point_penalty,
-        money_penalty
-        FROM job
-    </select>
-
     <select id="getProductByID" resultMap="ProductMap">
         SELECT
         product_id,
@@ -46,6 +32,77 @@
         products
         WHERE
         products.product_id = #{productId}
+    </select>
+
+    <select id="getVideoProductNotBuyByUserID" resultMap="ProductMap">
+        SELECT DISTINCT
+        p.product_id,
+        p.title,
+        p.description,
+        p.price,
+        p.category,
+        p.img_link,
+        p.link,
+        p.created_at,
+        p.updated_at
+        FROM
+        products p
+        LEFT JOIN orderitem oi ON p.product_id = oi.product_id
+        LEFT JOIN orderproducts op ON op.order_id = oi.order_id
+        LEFT JOIN user u ON op.user_id = u.user_id
+        WHERE
+        <if test="userId != null">
+            p.product_id NOT IN (
+            SELECT oi.product_id
+            FROM orderitem oi
+            INNER JOIN orderproducts op ON op.order_id = oi.order_id
+            WHERE op.user_id = #{userId}
+            )
+        </if>
+        <if test="userId == null">
+            1 = 1
+        </if>
+        AND p.category LIKE #{category}
+        AND p.title LIKE #{search}
+    </select>
+
+    <select id="getVideoProductBoughtByUserID" resultMap="ProductMap">
+        SELECT DISTINCT
+        p.product_id,
+        p.title,
+        p.description,
+        p.price,
+        p.category,
+        p.img_link,
+        p.link,
+        p.created_at,
+        p.updated_at
+        FROM
+        products p
+        LEFT JOIN orderitem oi ON p.product_id = oi.product_id
+        LEFT JOIN orderproducts op ON op.order_id = oi.order_id
+        LEFT JOIN user u ON op.user_id = u.user_id
+        WHERE
+        op.user_id = #{userId}
+        AND p.category LIKE #{category}
+    </select>
+
+    <select id="getItemProduct" resultMap="ProductMap">
+        SELECT
+        p.product_id,
+        p.title,
+        p.description,
+        p.price,
+        p.category,
+        p.img_link,
+        p.link,
+        p.created_at,
+        p.updated_at
+        FROM
+        products p
+        WHERE
+        AND p.category LIKE #{category}
+        AND p.title LIKE #{search}
     </select>
 
 </mapper>
