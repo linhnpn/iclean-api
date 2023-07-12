@@ -5,6 +5,26 @@
 
 <mapper namespace="com.iclean.icleanapi.repository.OrderProductMapper">
 
+    <resultMap id="OrderProductWithDetailResponseMap" type="com.iclean.icleanapi.dto.OrderProductResponse">
+        <result column="order_id" property="orderId"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_date" property="orderDate"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="address" property="address"/>
+        <collection property="products" ofType="com.iclean.icleanapi.domain.Product">
+            <id property="productId" column="product_id"/>
+            <result column="title" property="title"/>
+            <result column="description" property="description"/>
+            <result column="price" property="price"/>
+            <result column="category" property="category"/>
+            <result column="img_link" property="imgLink"/>
+            <result column="link" property="link"/>
+            <result column="created_at" property="createdAt"/>
+            <result column="updated_at" property="updatedAt"/>
+        </collection>
+    </resultMap>
+
     <resultMap id="OrderProductResponseMap" type="com.iclean.icleanapi.domain.OrderProduct">
         <result column="order_id" property="orderId"/>
         <result column="user_id" property="userId"/>
@@ -47,24 +67,36 @@
         order_date = #{orderDate}
     </select>
 
-    <select id="getOrder" resultMap="OrderProductResponseMap" parameterType="com.iclean.icleanapi.dto.OrderProductRequestView">
+    <select id="getOrder" resultMap="OrderProductWithDetailResponseMap" parameterType="com.iclean.icleanapi.dto.OrderProductRequestView">
         SELECT
         o.order_id,
         o.user_id,
         o.total_amount,
         o.address,
-        o.order_date
+        o.order_status,
+        o.order_date,
+        p.product_id,
+        p.title,
+        p.description,
+        p.price,
+        p.category,
+        p.img_link,
+        p.link,
+        p.created_at,
+        p.updated_at
         FROM
         orderproducts o
+        LEFT JOIN orderitem oi ON oi.order_id = o.order_id
+        LEFT JOIN products p ON p.product_id = oi.product_id
         WHERE
         <if test="renterId != null">
-            o.renter_id = #{renterId}
+            o.user_id = #{renterId}
         </if>
         <if test="renterId == null">
             1 = 1
         </if>
         <if test="category != null">
-            AND o.category = #{category}
+            AND p.category LIKE #{category}
         </if>
         <if test="status != null">
             AND o.order_status = #{status}
