@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/payment")
+@CrossOrigin(origins = {"http://localhost:3000", "https://clatt-api.monoinfinity.net",
+        "https://iclean-admin.vercel.app", "http://localhost:8080"}, allowCredentials = "true")
 public class PaymentHistoryController {
     @Autowired
     private PaymentService paymentService;

@@ -10,11 +10,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentHistoryResponse {
-    private String paymentId;
+    private int paymentId;
     private String paymentCode;
     private Double balance;
     private LocalDateTime paymentDate;
-    private String userId;
+    private int userId;
+    private String fullname;
     private String email;
     private String imgLink;
 }

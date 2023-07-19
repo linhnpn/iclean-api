@@ -11,6 +11,7 @@
         <result column="balance" property="balance"/>
         <result column="payment_date" property="paymentDate"/>
         <result column="user_id" property="userId"/>
+        <result column="fullname" property="fullname"/>
         <result column="email" property="email"/>
         <result column="profile_picture" property="imgLink"/>
     </resultMap>
@@ -24,6 +25,7 @@
         SELECT
         u.user_id,
         u.email,
+        u.fullname,
         u.profile_picture,
         ph.payment_id,
         ph.payment_code,
@@ -53,6 +55,7 @@
         SELECT
         u.user_id,
         u.email,
+        u.fullname,
         u.profile_picture,
         ph.payment_id,
         ph.payment_code,
