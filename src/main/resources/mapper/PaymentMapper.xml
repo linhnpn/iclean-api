@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iclean.icleanapi.repository.PaymentMapper">
+
+    <resultMap id="PaymentHistoryResponseMap" type="com.iclean.icleanapi.dto.PaymentHistoryResponse">
+        <result column="payment_id" property="paymentId"/>
+        <result column="payment_code" property="paymentCode"/>
+        <result column="balance" property="balance"/>
+        <result column="payment_date" property="paymentDate"/>
+        <result column="user_id" property="userId"/>
+        <result column="email" property="email"/>
+        <result column="profile_picture" property="imgLink"/>
+    </resultMap>
+
+    <resultMap id="StatisticMap" type="com.iclean.icleanapi.dto.StatisticResponse">
+        <result column="payment_day" property="paymentDay"/>
+        <result column="total_balance" property="totalBalance"/>
+    </resultMap>
+
+    <select id="GetAllPayment" resultMap="PaymentHistoryResponseMap">
+        SELECT
+        u.user_id,
+        u.email,
+        u.profile_picture,
+        ph.payment_id,
+        ph.payment_code,
+        ph.balance,
+        ph.payment_date
+        FROM payment_history ph
+        LEFT JOIN user u ON ph.user_id = u.user_id
+        ORDER BY ph.payment_date desc
+    </select>
+
+    <select id="GetStatistic" resultMap="StatisticMap">
+        SELECT
+        DATE(ph.payment_date) AS payment_day,
+        SUM(ph.balance) AS total_balance
+        FROM
+        payment_history ph
+        GROUP BY
+        payment_day;
+    </select>
+
+    <insert id="AddPayment" parameterType="com.iclean.icleanapi.domain.PaymentHistory">
+        INSERT INTO payment_history (payment_id, payment_code, balance, payment_date, user_id)
+        VALUES (#{paymentId}, #{paymentCode}, #{balance}, #{paymentDate}, #{userId});
+    </insert>
+
+    <select id="GetPaymentByUserID" resultMap="PaymentHistoryResponseMap">
+        SELECT
+        u.user_id,
+        u.email,
+        u.profile_picture,
+        ph.payment_id,
+        ph.payment_code,
+        ph.balance,
+        ph.payment_date
+        FROM payment_history ph
+        LEFT JOIN user u ON ph.user_id = u.user_id
+        WHERE u.user_id = #{userId}
+        ORDER BY ph.payment_date desc
+    </select>
+</mapper>
