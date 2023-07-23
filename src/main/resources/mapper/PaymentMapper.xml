@@ -13,6 +13,7 @@
         <result column="user_id" property="userId"/>
         <result column="fullname" property="fullname"/>
         <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
         <result column="profile_picture" property="imgLink"/>
     </resultMap>
 
@@ -25,6 +26,7 @@
         SELECT
         u.user_id,
         u.email,
+        u.phone,
         u.fullname,
         u.profile_picture,
         ph.payment_id,
@@ -55,6 +57,7 @@
         SELECT
         u.user_id,
         u.email,
+        u.phone,
         u.fullname,
         u.profile_picture,
         ph.payment_id,

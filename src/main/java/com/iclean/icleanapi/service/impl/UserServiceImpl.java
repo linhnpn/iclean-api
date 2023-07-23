@@ -1,5 +1,6 @@
 package com.iclean.icleanapi.service.impl;
 
+import com.iclean.icleanapi.domain.User;
 import com.iclean.icleanapi.dto.MoneyRequest;
 import com.iclean.icleanapi.dto.MoneyResponse;
 import com.iclean.icleanapi.dto.ResponseObject;
@@ -16,6 +17,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private MoneyMapper moneyMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public ResponseEntity<ResponseObject> getMoney(int userId) {
@@ -41,6 +44,21 @@ public class UserServiceImpl implements UserService {
             }
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseObject(HttpStatus.OK.toString(), "update Success!", null));
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), exception.getMessage(), null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<ResponseObject> getAllUser() {
+        try {
+            List<User> lists = userMapper.getAllUser();
+            if (lists == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), "Error.", null));
+            }
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseObject(HttpStatus.OK.toString(), "List User!", lists));
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseObject(HttpStatus.BAD_REQUEST.toString(), exception.getMessage(), null));

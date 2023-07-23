@@ -23,6 +23,24 @@
             AND roles.role_id = user.role_id
     </select>
 
+    <select id="getAllUser" resultType="com.iclean.icleanapi.domain.User">
+        SELECT
+        user_id,
+        username,
+        password,
+        fullname,
+        date_of_birth,
+        gender,
+        point,
+        phone,
+        email,
+        bio,
+        profile_picture,
+        role_name
+        FROM user, roles where
+        roles.role_id = user.role_id
+    </select>
+
     <select id="findUserDtoByUserName" parameterType="com.iclean.icleanapi.domain.User" resultType="com.iclean.icleanapi.domain.UserDto">
         SELECT
         user.user_id,

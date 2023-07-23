@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class PaymentHistoryResponse {
     private int paymentId;
     private String paymentCode;
+    private String phone;
     private Double balance;
     private LocalDateTime paymentDate;
     private int userId;

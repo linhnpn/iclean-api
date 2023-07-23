@@ -8,4 +8,6 @@ public interface UserService {
     ResponseEntity<ResponseObject> getMoney(int userId);
 
     ResponseEntity<ResponseObject> updateMoney(MoneyRequest moneyRequest);
+
+    ResponseEntity<ResponseObject> getAllUser();
 }

@@ -5,6 +5,8 @@ import com.iclean.icleanapi.domain.UserDto;
 import com.iclean.icleanapi.dto.ChangePasswordForm;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
     User findUserByUserName(String username);
@@ -12,4 +14,5 @@ public interface UserMapper {
     UserDto findUserDtoByUserNameNoAddressDefault(String username);
     void createUser(User user);
     void changePassword(ChangePasswordForm form);
+    List<User> getAllUser();
 }
